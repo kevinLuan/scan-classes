@@ -4,10 +4,7 @@
 
 ###JAVA class 扫描
 
-###AAAA
+### 打包成JAR 包命令
+mvn clean compile install -Dmaven.test.skip=true
 
 
-####test
-	test
-
-	我的测试Git
