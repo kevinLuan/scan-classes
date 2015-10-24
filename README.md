@@ -10,7 +10,8 @@
 	mvn clean compile install -Dmaven.test.skip=true
 	打包成jar包安装到本地仓库并发布到远程私服
 	mvn clean compile install deploy -Dmaven.test.skip=true
-###描述
+
+###Running the samples
 	#扫描项目中的classes 目录下的类
 	Set<Class<?>> packageSet = ScanClass.scanPackage();
 		for (Class<?> clazz : packageSet) {
@@ -23,3 +24,6 @@
 			System.out.println(clazz);
 		}
 
+###Importing into eclipse
+	mvn eclipse:eclipse
+	
