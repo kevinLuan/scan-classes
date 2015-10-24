@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.classes.scan</groupId>
+	<artifactId>scan-classes</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+
+	<name>scan-classes</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdk.version>1.6</jdk.version>
+		<log4j.version>2.0.1</log4j.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- 
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		 -->
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>nexus-thirdparty</id>
+			<name>Nexus Snapshot Repository</name>
+			<layout>default</layout>
+			<url>http://test.m.koudai.com/nexus/content/repositories/thirdparty/</url>
+		</repository>
+		<repository>
+			<id>self</id>
+			<name>self uploaded jar</name>
+			<url>http://test.m.koudai.com/nexus/content/repositories/releases/</url>
+		</repository>
+
+	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>Nexus Release Repository</name>
+			<url>
+				http://test.m.koudai.com/nexus/content/repositories/thirdparty/
+			</url>
+		</repository>
+	</distributionManagement>
+</project>
