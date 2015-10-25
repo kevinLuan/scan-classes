@@ -1,6 +1,4 @@
-#scan-classes
-
-###JAVA class 类扫描工具
+#JAVA class 类扫描工具
 
 ### author:kevin Luan
 	email: kevin_Luan@126.com
