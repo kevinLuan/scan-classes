@@ -17,17 +17,21 @@
 
 ###Running the samples
 
-	#扫描项目中的classes 目录下的类
-	Set<Class<?>> packageSet = ScanClass.scanPackage();
-		for (Class<?> clazz : packageSet) {
-			if(clazz.toString().indexOf("com.classes")!=-1)
-				System.out.println(clazz);	
-		}
-	#扫描包：“com.classes.scan” 下面的所有Class文件，包括依赖的JAR包
-	 Set<Class<?>> packageSet = ScanClass.scanPackage("com.classes.scan");
-	 	for (Class<?> clazz : packageSet) {
+	public class MainRun {//扫描package: com.classes.scan.test 下面所有类上使用了@Api的类
+	public static void main(String[] args) {
+		Set<Class<?>> set = ScanClass.scanPackage("com.classes.scan.test", new ClassFilter() {
+
+			@Override
+			public boolean accept(Class<?> clazz) {
+				return clazz.getAnnotation(Api.class) != null;
+			}
+		});
+		for (Class<?> clazz : set) {
 			System.out.println(clazz);
 		}
+	}
+}
+	
 
 ###Importing into eclipse
 	
