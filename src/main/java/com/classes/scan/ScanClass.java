@@ -127,7 +127,7 @@ public class ScanClass {
     return null;
   }
 
-  private static Set<String> getClassPaths(String scanPackage) {
+  public static Set<String> getClassPaths(String scanPackage) {
     scanPackage = scanPackage.replace(".", "/");
     Enumeration<URL> resources = null;
     try {// 如果传入“”返回classes路径
@@ -147,8 +147,13 @@ public class ScanClass {
   }
 
   public static String[] getSystemClassPaths() {
-    String[] classPaths = System.getProperty("java.class.path").split(System.getProperty("path.separator"));
-    return classPaths;
+    String data= System.getProperty("java.class.path");
+    if(data!=null){
+        String[] classPaths = data.split(System.getProperty("path.separator"));
+        return classPaths;
+    }else{
+        return new String[0];
+    }
   }
 
   public static ClassLoader getClassLoader() {

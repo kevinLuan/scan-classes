@@ -19,11 +19,11 @@ public class ClassEntityTest {
   public void test_1() {
     File file =
         new File(
-            "/Users/kevin/JAVA_HOME/vdianApi/target/test-classes/com/vdian/api/controller/order/OrderDetailControllerTest.class");
-    String scanPackage = "com.vdian.api.controller.cps.";
-    String searchClassPath = "/Users/kevin/JAVA_HOME/vdianApi/target/test-classes/";
+            "/Users/kevin/Desktop/scan-classes/target/com/classes/scan/ClassEntity.class");
+    String scanPackage = "com.classes.scan.";
+    String searchClassPath = "/Users/kevin/Desktop/scan-classes/target/";
     ClassEntity entity = new ClassEntity(file, scanPackage, searchClassPath);
-    Assert.assertEquals(entity.getClassPath(), "com.vdian.api.controller.order.OrderDetailControllerTest");
+    Assert.assertEquals(entity.getClassPath(), "com.classes.scan.ClassEntity");
   }
 
   @Test

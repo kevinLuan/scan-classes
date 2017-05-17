@@ -4,7 +4,7 @@
 
 	<groupId>com.classes.scan</groupId>
 	<artifactId>scan-classes</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>scan-classes</name>
@@ -41,28 +41,35 @@
 		</dependency>
 		 -->
 	</dependencies>
-	<!-- 依赖私服地址需要改为实际有效的地址127.0.0.1:8080 -->
-	<repositories>
-		<repository>
-			<id>nexus-thirdparty</id>
-			<name>Nexus Snapshot Repository</name>
-			<layout>default</layout>
-			<url>http://127.0.0.1:8080/nexus/content/repositories/thirdparty/</url>
-		</repository>
-		<repository>
-			<id>self</id>
-			<name>self uploaded jar</name>
-			<url>http://127.0.0.1:8080/nexus/content/repositories/releases/</url>
-		</repository>
-
-	</repositories>
 	<distributionManagement>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Nexus Snapshots Repository</name>
+			<url>http://0.0.0.0:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
 		<repository>
 			<id>releases</id>
 			<name>Nexus Release Repository</name>
 			<url>
-				http://127.0.0.1:8080/nexus/content/repositories/thirdparty/
+				http://0.0.0.0:8081/nexus/content/repositories/releases/
 			</url>
 		</repository>
 	</distributionManagement>
+	<build>
+		<plugins>
+			<!-- deploy 时代码doc 和 source -->
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+		</plugins>
+	</build>
 </project>
