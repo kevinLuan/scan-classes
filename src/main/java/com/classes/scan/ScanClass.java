@@ -35,9 +35,9 @@ public class ScanClass {
       fillClasses(classPath, scanPackage, classFilter, classes);
     }
     // 如果在项目依赖ClassPath中未找到，在去系统定义ClassPath中查找
-    if (classes.isEmpty()) {
-      scanSystemClass(scanPackage, classFilter, classes);
-    }
+		// if (classes.isEmpty()) {
+		// scanSystemClass(scanPackage, classFilter, classes);
+		// }
     return classes;
   }
 
