@@ -60,7 +60,7 @@ public class ScanClass {
     return classes;
   }
 
-  private static void fillClasses(String path, String scanPackage, ClassFilter classFilter, Set<Class<?>> classes) {
+  public static void fillClasses(String path, String scanPackage, ClassFilter classFilter, Set<Class<?>> classes) {
     if (ClassFile.isJar(path)) {
       processJarFile(new File(ClassFile.parserJarPath(path)), scanPackage, classFilter, classes);
     } else {
@@ -121,7 +121,7 @@ public class ScanClass {
           return clazz;
         }
       } catch (Throwable ex) {
-        // ex.printStackTrace();
+//         ex.printStackTrace();
       }
     }
     return null;
