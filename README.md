@@ -1,24 +1,33 @@
-#JAVA class 类扫描工具
+
+## Architecture
+
+![Architecture](...)
+
+## Features
+* 轻量级类扫描工具，支持扫描指定包下的类；
 
 
-###  项目依赖
+## Getting started
+
+The following code snippet comes from [scan-classes Samples](https://github.com/kevinLuan/scan-classes.git). You may clone the sample project.
+
+```bash
+git clone https://github.com/kevinLuan/scan-classes.git
+```
+
+There's a [README](https://github.com/kevinLuan/scan-classes/blob/master/README.md) file under `scan-classes` directory. We recommend referencing the samples in that directory by following the below-mentioned instructions:
+
+### Maven dependency
 ```xml
 <dependency>
     <groupId>cn.taskflow</groupId>
-	<artifactId>scan-classes</artifactId>
-	<version>0.1.0</version>
+    <artifactId>scan-classes</artifactId>
+    <version>0.1.0</version>
 </dependency>
 ```
-	
-### 打包成JAR 包命令
-
-	安装包本地仓库
-	mvn clean compile install -Dmaven.test.skip=true
-	打包成jar包安装到本地仓库并发布到远程私服
-	mvn clean compile install deploy -Dmaven.test.skip=true
 
 
-###Running the samples
+### Running the samples
 
 	public class MainRun {//扫描package: cn.taskflow.scan 下面所有类上使用了@Api的类
 	public static void main(String[] args) {
@@ -36,14 +45,8 @@
 }
 	
 
-###Importing into eclipse
+### Importing into eclipse
 	
 	mvn eclipse:eclipse
-	
 
-###打包成JAR 包命令
 
-	安装包本地仓库
-	mvn clean compile install -Dmaven.test.skip=true
-	打包成jar包安装到本地仓库并发布到远程私服
-	mvn clean compile install deploy -Dmaven.test.skip=true
