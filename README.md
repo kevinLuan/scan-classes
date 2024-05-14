@@ -20,9 +20,9 @@
 
 ###Running the samples
 
-	public class MainRun {//扫描package: com.classes.scan.test 下面所有类上使用了@Api的类
+	public class MainRun {//扫描package: cn.taskflow.scan 下面所有类上使用了@Api的类
 	public static void main(String[] args) {
-		Set<Class<?>> set = ScanClass.scanPackage("com.classes.scan.test", new ClassFilter() {
+		Set<Class<?>> set = ScanClass.scanPackage("cn.taskflow.scan", new ClassFilter() {
 
 			@Override
 			public boolean accept(Class<?> clazz) {
