@@ -8,14 +8,19 @@
 	<packaging>jar</packaging>
 
 	<name>scan-classes</name>
-	<url>http://maven.apache.org</url>
+	<url>https://github.com/kevinLuan/scan-classes</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.6</jdk.version>
 		<log4j.version>2.0.1</log4j.version>
+		<main.user.dir>${user.dir}</main.user.dir>
+		<!--suppress UnresolvedMavenProperty -->
+		<gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
+		<!--suppress UnresolvedMavenProperty -->
+		<gpg.keyname>${env.GPG_KEYNAME}</gpg.keyname>
+		<gpg.homedir>/Users/kevin/.gnupg</gpg.homedir>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -23,53 +28,203 @@
 			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		 -->
 	</dependencies>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>snapshots</id>
-			<name>Nexus Snapshots Repository</name>
-			<url>http://0.0.0.0:8081/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>releases</id>
-			<name>Nexus Release Repository</name>
-			<url>
-				http://0.0.0.0:8081/nexus/content/repositories/releases/
-			</url>
-		</repository>
-	</distributionManagement>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<issueManagement>
+		<system>Github Issues</system>
+		<url>https://github.com/kevinLuan/scan-classes/issues</url>
+	</issueManagement>
+	<!-- Developer account -->
+	<developers>
+		<developer>
+			<name>kevin.luan</name>
+			<email>kevin_luan@126.com</email>
+			<organization>taskflow technologies inc.</organization>
+			<organizationUrl>http://www.taskflow.cn/</organizationUrl>
+		</developer>
+	</developers>
+	<scm>
+		<url>https://github.com/kevinLuan/scan-classes</url>
+		<connection>scm:git:https://github.com/kevinLuan/scan-classes.git</connection>
+		<developerConnection>scm:git:https://github.com/kevinLuan/scan-classes.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+
 	<build>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
-			<!-- deploy 时代码doc 和 source -->
-            <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+			<!-- 最新发布中央私服插件 -->
+			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.4.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<publishingServerId>central</publishingServerId>
+					<tokenAuth>true</tokenAuth>
+				</configuration>
+			</plugin>
+			<!-- Publish documentation and source code -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Javadoc工具 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.4</version>
+				<configuration>
+					<additionalJOptions>
+						<additionalJOption>-Xdoclint:none</additionalJOption>
+					</additionalJOptions>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.6</version>
+				<configuration>
+					<gpgArguments>
+						<arg>--pinentry-mode</arg>
+						<arg>loopback</arg>
+					</gpgArguments>
+				</configuration>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- java编译插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<!-- 单元测试插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<junitArtifactName>junit:junit</junitArtifactName>
+					<includes>
+						<include>**/*Test.java</include>
+						<include>**/Test*.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>net.ju-n.maven.plugins</groupId>
+				<artifactId>checksum-maven-plugin</artifactId>
+				<version>1.2</version>
+				<executions>
+					<execution>
+						<id>checksum-maven-plugin-files</id>
+						<phase>package</phase>
+						<goals>
+							<goal>files</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<fileSets>
+						<fileSet>
+							<directory>${project.build.directory}</directory>
+							<includes>
+								<include>*.jar</include>
+							</includes>
+						</fileSet>
+					</fileSets>
+					<algorithms>
+						<algorithm>MD5</algorithm>
+					</algorithms>
+				</configuration>
+			</plugin>
+			<!-- 代码开源规范插件 -->
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>3.0</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>remove</goal>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<quiet>true</quiet>
+					<!--suppress UnresolvedMavenProperty -->
+					<header>${main.user.dir}/tools/codestyle/HEADER</header>
+					<includes>
+						<include>**/src/main/java/**</include>
+						<include>**/src/test/java/**</include>
+					</includes>
+					<excludes>
+						<exclude>**/ignore.java</exclude>
+					</excludes>
+					<strictCheck>true</strictCheck>
+					<mapping>
+						<java>SLASHSTAR_STYLE</java>
+					</mapping>
+				</configuration>
+			</plugin>
+
+			<!-- formatter -->
+			<plugin>
+				<groupId>com.googlecode.maven-java-formatter-plugin</groupId>
+				<artifactId>maven-java-formatter-plugin</artifactId>
+				<version>0.4</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!--suppress UnresolvedMavenProperty -->
+					<configFile>${main.user.dir}/tools/codestyle/formatter.xml</configFile>
+					<!--suppress UnresolvedMavenProperty -->
+					<encoding>${project.encoding}</encoding>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>
