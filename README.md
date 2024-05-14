@@ -1,11 +1,14 @@
 #JAVA class 类扫描工具
 
 
-### author:kevin Luan
-
-	email: kevin_Luan@126.com
-
-	git clone https://github.com/kevinLuan/scan-classes.git
+###  项目依赖
+```xml
+<dependency>
+    <groupId>cn.taskflow</groupId>
+	<artifactId>scan-classes</artifactId>
+	<version>0.1.0</version>
+</dependency>
+```
 	
 ### 打包成JAR 包命令
 
