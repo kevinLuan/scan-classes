@@ -7,19 +7,24 @@ scan-classes
   <a href="https://central.sonatype.com/artifact/cn.taskflow/scan-classes?smo=true"><img src="https://img.shields.io/maven-metadata/v.svg?label=Maven%20Central&metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fcn%2Ftaskflow%2Fscan-classes%2Fmaven-metadata.xml" alt="License"></a>
 </div>
 
+[English](./README.md) | 简体中文
+## 目录
+- [简述](#简述)
+- [特点](#特点)
+- [安装](#安装)
+- [示例](#示例)
+## 简述
+轻量级java类扫描工具库
 
-## Overview
-Lightweight java class scanner library
-
-## Features
-* Supports scanning classes under packages
+## 特点
+* 支持扫描package 下的类
 
 
-## Installation
-To integrate TaskFlow into your Java project.
+## 安装
 
-The Maven project adds the following dependency to your 'pom.xml' file：
-Maven dependency
+要将项目中集成到您的 Java 项目中。
+
+Maven 项目在 'pom.xml' 文件中添加以下依赖：
 ```xml
 <dependency>
     <groupId>cn.taskflow</groupId>
@@ -27,14 +32,13 @@ Maven dependency
     <version>latest</version>
 </dependency>
 ```
-Gradle dependency
+Gradle 项目添加以下依赖：
 ```groovy
-dependencies {
-    implementation 'cn.taskflow:scan-classes:latest'
-}
+    dependencies {
+        implementation 'cn.taskflow:scan-classes:latest'
+    }
 ```
-
-###  Sample
+### 示例
 
 ```java
 public class MainRun {
@@ -53,7 +57,3 @@ public class MainRun {
 	}
 }
 ```
-	
-
-
-

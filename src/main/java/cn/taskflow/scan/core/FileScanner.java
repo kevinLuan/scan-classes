@@ -20,7 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScanNativeFile {
+public class FileScanner {
     private static boolean matches(String scanFileName, String filePath) {
         int lastFileIndex = filePath.lastIndexOf(File.separator);
         if (filePath.substring(lastFileIndex + 1).equals(scanFileName)) {
@@ -30,17 +30,17 @@ public class ScanNativeFile {
     }
 
     /**
-     * 扫描文件
+     * Scan file
      * 
-     * @param path 执行扫描路径
-     * @param scanFileName 扫描文件名称
+     * @param path Path to scan
+     * @param scanFileName File name to scan for
      * @return
      * @throws Exception
      */
     public static File scanFile(String path, String scanFileName) throws Exception {
         File file = new File(path);
         if (!file.exists()) {
-            throw new Exception("指定路径不存在:" + file.getPath());
+            throw new Exception("Specified path does not exist:" + file.getPath());
         } else {
             String[] files = file.list();
             List<String> isDirectory = new ArrayList<String>();

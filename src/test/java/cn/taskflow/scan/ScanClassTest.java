@@ -18,16 +18,14 @@ package cn.taskflow.scan;
 
 import java.util.Set;
 
-import cn.taskflow.scan.core.ScanClass;
-import junit.framework.Assert;
-
+import cn.taskflow.scan.core.ClassScanner;
 import org.junit.Test;
 
 public class ScanClassTest {
 
     @Test
     public void test() {
-        Set<Class<?>> packageSet = ScanClass.scanPackage();
+        Set<Class<?>> packageSet = ClassScanner.scanPackage();
         for (Class<?> clazz : packageSet) {
             System.out.println(clazz);
         }
@@ -36,7 +34,7 @@ public class ScanClassTest {
 
     @Test
     public void testScan() {
-        Set<Class<?>> packageSet = ScanClass.scanPackage("cn.taskflow.scan");
+        Set<Class<?>> packageSet = ClassScanner.scanPackage("cn.taskflow.scan");
         for (Class<?> clazz : packageSet) {
             System.out.println(clazz);
         }
@@ -45,7 +43,7 @@ public class ScanClassTest {
 
     @Test
     public void testScan_com() {
-        Set<Class<?>> packageSet = ScanClass.scanPackage("cn.taskflow");
+        Set<Class<?>> packageSet = ClassScanner.scanPackage("cn.taskflow");
         for (Class<?> clazz : packageSet) {
             System.out.println(clazz);
         }

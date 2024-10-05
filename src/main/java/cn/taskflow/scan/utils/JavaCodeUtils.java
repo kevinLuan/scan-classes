@@ -22,34 +22,38 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import cn.taskflow.scan.core.ClassFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JavaCodeUtils {
+    private static final Logger log = LoggerFactory.getLogger(JavaCodeUtils.class);
+
     public static void main(String[] args) throws Exception {
         copyJavaFile(JavaCodeUtils.class, ClassFilter.class);
         jar("com.test", "hello", "1.0.0");
     }
 
     /**
-     * 拷贝Class的java文件到该目录下：/project_name/target/api_source/
+     * Copy the Java file of the Class to this directory: /project_name/target/api_source/
      * <p>
-     * 只支持本地项目中存在Java源代码的Class
+     * Only supports Classes with Java source code existing in the local project
      * </p>
      */
     public static void copyJavaFile(Class<?>... clazz) throws IOException {
         for (int i = 0; i < clazz.length; i++) {
             JavaEntity javaEntity = JavaEntity.getInstance(clazz[i]);
             boolean result = copy(javaEntity);
-            System.out.println("copy:" + clazz[i] + ".java->result:" + result);
+            log.info("copy:" + clazz[i] + ".java->result:" + result);
         }
     }
 
     /**
-     * 生成Maven 格式的Jar文件
+     * Generate Maven format Jar file
      */
     public static String jar(String groupId, String artifactId, String version) throws IOException,
                                                                                InterruptedException {
         String jarName = artifactId + "-" + version + "-source.jar";
-        System.out.println(getApiSourcePath() + " jar -cvf " + jarName + " ./com");
+        log.info(getApiSourcePath() + " jar -cvf " + jarName + " ./com");
         return MavenDeployJarUtils.exec(getApiSourcePath(), "jar -cvf " + jarName + " ./com");
     }
 

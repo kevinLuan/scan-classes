@@ -23,11 +23,19 @@
 		<gpg.homedir>/Users/kevin/.gnupg</gpg.homedir>
 	</properties>
 	<dependencies>
+		<!-- slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.36</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- junit test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13.1</version>
-			<scope>test</scope>
+				<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<licenses>
@@ -60,7 +68,7 @@
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
-			<!-- 最新发布中央私服插件 -->
+			<!-- Latest central repository publishing plugin -->
 			<plugin>
 				<groupId>org.sonatype.central</groupId>
 				<artifactId>central-publishing-maven-plugin</artifactId>
@@ -85,7 +93,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Javadoc工具 -->
+			<!-- Javadoc tool -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -124,7 +132,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- java编译插件 -->
+			<!-- Java compilation plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -135,7 +143,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<!-- 单元测试插件 -->
+			<!-- Unit testing plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -175,7 +183,7 @@
 					</algorithms>
 				</configuration>
 			</plugin>
-			<!-- 代码开源规范插件 -->
+			<!-- Code open source standard plugin -->
 			<plugin>
 				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>

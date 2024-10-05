@@ -19,15 +19,15 @@ package cn.taskflow.scan.test;
 import java.util.Set;
 
 import cn.taskflow.scan.core.ClassFilter;
-import cn.taskflow.scan.core.ScanClass;
+import cn.taskflow.scan.core.ClassScanner;
 
 public class MainRun {
     public static void main(String[] args) {
-        Set<Class<?>> set = ScanClass.scanPackage("com.classes.scan.test", new ClassFilter() {
+        Set<Class<?>> set = ClassScanner.scanPackage("cn.taskflow.scan", new ClassFilter() {
 
             @Override
             public boolean accept(Class<?> clazz) {
-                return clazz.getAnnotation(Api.class) != null;
+                return true;
             }
         });
         for (Class<?> clazz : set) {

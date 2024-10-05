@@ -16,6 +16,9 @@
  */
 package cn.taskflow.scan.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,14 +29,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Maven 发布Jar使用工具
+ * Maven Jar Deployment Utility
  * 
- * @CreateTime 2016年6月2日 下午4:57:40
+ * @CreateTime 2016-06-02 16:57:40
  * @author KEVIN LUAN
  */
 public class MavenDeployJarUtils {
+    private final static Logger log = LoggerFactory.getLogger(MavenDeployJarUtils.class);
+
     /**
-     * 将classes拷贝到path目录
+     * Copy classes to the specified path directory
      */
     public static void includeClass(String path, Class<?>... classes) throws Exception {
         CopyClassUtils.copying(classes);
@@ -44,7 +49,7 @@ public class MavenDeployJarUtils {
     }
 
     /**
-     * 获取Maven home
+     * Get Maven home
      */
     private static String mvn = null;
     static {
@@ -53,7 +58,7 @@ public class MavenDeployJarUtils {
 
             String path = executeShell("pwd");
             path = path.trim() + "/target/api/";
-            // 初始化Class临时存储路径
+            // Initialize temporary storage path for Class
             CopyClassUtils.OutputPath = path;
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,33 +67,33 @@ public class MavenDeployJarUtils {
     }
 
     /**
-     * 执行Maven assembly
+     * Execute Maven assembly
      */
     public static boolean assemblyProcess() throws Exception {
-        System.out.println("----------------------assembly client api jar----------------------");
+        log.info("----------------------assembly client api jar----------------------");
         String result = executeShell(mvn + " assembly:assembly");
         return isSuccess(result);
     }
 
     /**
-     * 将path下com目录下文件及目录生成Jar包
+     * Generate Jar package from files and directories under the com directory in the specified path
      */
     public static String jar(String path, String jarName) throws IOException, InterruptedException {
         return exec(path, "jar -cvf " + jarName + " ./com");
     }
 
     /**
-     * 升级Jar文件
+     * Update Jar file
      * 
      * @param jarName
-     *        如：test.jar
+     *        e.g.: test.jar
      */
     public static String jar(String jarName) throws IOException, InterruptedException {
         return exec(CopyClassUtils.OutputPath, "jar -cvf " + jarName + " ./com");
     }
 
     /**
-     * 生成Maven 格式的Jar文件
+     * Generate Maven format Jar file
      */
     public static String jar(String groupId, String artifactId, String version) throws IOException,
                                                                                InterruptedException {
@@ -97,7 +102,7 @@ public class MavenDeployJarUtils {
     }
 
     /**
-     * Maven deploy 发布到远程私服
+     * Maven deploy to remote repository
      * 
      * @param groupId
      *        com.weidian.open
@@ -105,11 +110,11 @@ public class MavenDeployJarUtils {
      *        config_center_client_api
      * @param version
      *        1.0.0-SNAPSHOT
-     * @param url 远程私服地址
+     * @param url Remote repository address
      */
     public static boolean deploySnapshots(String groupId, String artifactId, String version, String url)
                                                                                                         throws Exception {
-        System.out.println("----------------------发布到远程私服----------------------");
+        log.info("----------------------Deploy to remote repository----------------------");
         String jarName = artifactId + "-" + version + ".jar";
         String shell = mvn + " deploy:deploy-file -DgroupId=" + groupId + " -DartifactId=" + artifactId + " -Dversion="
                        + version + " -Dpackaging=jar -Dfile=" + jarName + " -DrepositoryId=snapshots -Durl=" + url;
@@ -118,7 +123,7 @@ public class MavenDeployJarUtils {
     }
 
     /**
-     * Maven INSTALL 安装到本地仓库
+     * Maven INSTALL to local repository
      * 
      * @param groupId
      *        com.weidian.open
@@ -128,7 +133,7 @@ public class MavenDeployJarUtils {
      *        1.0.0-SNAPSHOT
      */
     public static boolean installJarProcess(String groupId, String artifactId, String version) throws Exception {
-        System.out.println("----------------------发布到本地仓库----------------------");
+        log.info("----------------------Install to local repository----------------------");
         String jarName = artifactId + "-" + version + ".jar";
 
         String shell = mvn + " install:install-file -Dfile=" + jarName + " -DgroupId=" + groupId + " -DartifactId="
@@ -141,20 +146,20 @@ public class MavenDeployJarUtils {
         if (result.indexOf("[INFO] BUILD SUCCESS") != -1) {
             return true;
         } else {
-            System.err.println(result);
+            log.error(result);
             return false;
         }
     }
 
     public static String exec(String path, String shell) throws IOException, InterruptedException {
-        System.out.println("$shell>>" + shell);
-        System.out.println("path:" + path);
+        log.info("$shell>>" + shell);
+        log.info("path:" + path);
         Process process = Runtime.getRuntime().exec(shell, new String[] {}, new File(path));
         try {
             String result = println(process.getInputStream()).toString();
             if (result == null || result.length() == 0) {
                 String error = println(process.getErrorStream()).toString();
-                System.err.println(error);
+                log.error(error);
             }
             return result;
         } finally {
@@ -176,7 +181,7 @@ public class MavenDeployJarUtils {
         String line = br.readLine();
         while (line != null) {
             builder.append(line + "\n");
-            System.out.println(line);
+            log.info(line);
             line = br.readLine();
         }
         br.close();
@@ -185,7 +190,7 @@ public class MavenDeployJarUtils {
     }
 
     public static String executeShell(String command) throws Exception {
-        System.out.println("$shell>> " + command);
+        log.info("$shell>> " + command);
         try {
             Process process = Runtime.getRuntime().exec(command);
             try {
@@ -201,7 +206,7 @@ public class MavenDeployJarUtils {
     }
 
     /**
-     * 获取Maven 环境变量
+     * Get Maven environment variable
      * 
      * @return
      * @throws Exception
@@ -215,7 +220,7 @@ public class MavenDeployJarUtils {
         } else if (envMap.containsKey("MAVEN_HOME")) {
             return envMap.get("MAVEN_HOME");
         } else {
-            throw new IllegalArgumentException("请配置maven环境变量`M2_HOME` or `M3_HOME`");
+            throw new IllegalArgumentException("Please configure maven environment variable `M2_HOME` or `M3_HOME`");
         }
     }
 
@@ -233,18 +238,18 @@ public class MavenDeployJarUtils {
     }
 
     /**
-     * 发布Jar 到Maven私服
+     * Deploy Jar to Maven repository
      * <p>
-     * 1. Copying classes //拷贝包含的Class文件
+     * 1. Copying classes //Copy included Class files
      * </p>
      * <p>
-     * 2. jar -cvf xxx.jar ./com //生成Jar包
+     * 2. jar -cvf xxx.jar ./com //Generate Jar package
      * </p>
      * <p>
-     * 3. mvn install xxx //发布到本地私服
+     * 3. mvn install xxx //Install to local repository
      * </p>
      * <p>
-     * 4. mvn deploy xxx //发布到远程私服
+     * 4. mvn deploy xxx //Deploy to remote repository
      * </p>
      * 
      */
@@ -254,16 +259,16 @@ public class MavenDeployJarUtils {
         MavenDeployJarUtils.jar(groupId, artifactId, version);
         boolean install = MavenDeployJarUtils.installJarProcess(groupId, artifactId, version);
         boolean deploy = MavenDeployJarUtils.deploySnapshots(groupId, artifactId, version, url);
-        System.out.println("--------------------------------------------");
+        log.info("--------------------------------------------");
         if (install) {
-            System.out.println("成功发布到本地私服");
+            log.info("Successfully installed to local repository");
         } else {
-            System.err.println("发布到本地私服失败");
+            log.error("Failed to install to local repository");
         }
         if (deploy) {
-            System.out.println("成功发布到远程私服");
+            log.info("Successfully deployed to remote repository");
         } else {
-            System.err.println("发布到远程私服失败");
+            log.error("Failed to deploy to remote repository");
         }
         if (deploy && install) {
             print(groupId, artifactId, version);
@@ -271,10 +276,10 @@ public class MavenDeployJarUtils {
     }
 
     static void print(String groupId, String artifactId, String version) {
-        System.out.println("<dependency>");
-        System.out.println("\t<groupId>" + groupId + "</groupId>");
-        System.out.println("\t<artifactId>" + artifactId + "</artifactId>");
-        System.out.println("\t<version>" + version + "</version>");
-        System.out.println("</dependency>");
+        log.info("<dependency>");
+        log.info("\t<groupId>" + groupId + "</groupId>");
+        log.info("\t<artifactId>" + artifactId + "</artifactId>");
+        log.info("\t<version>" + version + "</version>");
+        log.info("</dependency>");
     }
 }

@@ -16,6 +16,9 @@
  */
 package cn.taskflow.scan.core;
 
+/**
+ * String utils
+ */
 class StringUtils {
 
     public static boolean isBlank(String str) {

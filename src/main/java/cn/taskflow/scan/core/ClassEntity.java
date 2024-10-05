@@ -18,20 +18,20 @@ package cn.taskflow.scan.core;
 
 import java.io.File;
 
-public class ClassEntity extends ClassFile {
+public class ClassEntity extends ClassFileUtils {
     private File   file;
     /**
-     * 扫描包
+     * Scan package
      */
     private String scanPackage;
     /**
-     * Class 文件查找路径
+     * Class file search path
      */
     private String classPath;
 
     public ClassEntity(File file, String scanPackage, String searchClassPath) {
         if (false == searchClassPath.endsWith(File.separator)) {
-            searchClassPath += File.separator;// 扫描CLASS 目录 项目Class目录+PackageName
+            searchClassPath += File.separator;// Scan CLASS directory: project Class directory + PackageName
         }
         this.file = file;
         this.scanPackage = scanPackage;
@@ -40,7 +40,7 @@ public class ClassEntity extends ClassFile {
     }
 
     /**
-     * 返回com.xx.MyClass
+     * Returns com.xx.MyClass
      * 
      * @return
      */

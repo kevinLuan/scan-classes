@@ -18,6 +18,9 @@ package cn.taskflow.scan.utils;
 
 import java.io.File;
 
+/**
+ * Java entity
+ */
 public class JavaEntity {
     private Class<?> clazz;
 

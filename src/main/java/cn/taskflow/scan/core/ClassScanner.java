@@ -16,6 +16,9 @@
  */
 package cn.taskflow.scan.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -27,11 +30,12 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
- * 类扫描
- * 
+ * Class Scanner
+ *
  * @author KEVIN LUAN
  */
-public class ScanClass {
+public class ClassScanner {
+    private static final Logger log = LoggerFactory.getLogger(ClassScanner.class);
 
     public static Set<Class<?>> scanPackage() {
         return scanPackage("", null);
@@ -42,14 +46,14 @@ public class ScanClass {
     }
 
     public static Set<Class<?>> scanPackage(String scanPackage, ClassFilter classFilter) {
-        scanPackage = ClassFile.formatScanPackage(scanPackage);
+        scanPackage = ClassFileUtils.formatScanPackage(scanPackage);
         final Set<Class<?>> classes = new HashSet<Class<?>>();
         for (String classPath : getClassPaths(scanPackage)) {
-            classPath = ClassFile.decode(classPath);
-            System.out.println(String.format("Scan java classpath:[%s]", classPath));
+            classPath = ClassFileUtils.decode(classPath);
+            log.info("Scan java classpath:[{}]", classPath);
             fillClasses(classPath, scanPackage, classFilter, classes);
         }
-        // 如果在项目依赖ClassPath中未找到，在去系统定义ClassPath中查找
+        // If not found in project dependencies ClassPath, search in system-defined ClassPath
         // if (classes.isEmpty()) {
         // scanSystemClass(scanPackage, classFilter, classes);
         // }
@@ -59,8 +63,8 @@ public class ScanClass {
     public static Set<Class<?>> scanPackage(Set<String> classPath, String scanPackage, ClassFilter classFilter) {
         final Set<Class<?>> classes = new HashSet<Class<?>>();
         for (String path : classPath) {
-            path = ClassFile.decode(path);
-            System.out.println(String.format("Scan java classpath:[%s]", classPath));
+            path = ClassFileUtils.decode(path);
+            log.info("Scan java classpath:[{}]", classPath);
             fillClasses(path, scanPackage, classFilter, classes);
         }
         return classes;
@@ -68,16 +72,16 @@ public class ScanClass {
 
     public static Set<Class<?>> scanSystemClass(String scanPackage, ClassFilter classFilter, Set<Class<?>> classes) {
         for (String classPath : getSystemClassPaths()) {
-            classPath = ClassFile.decode(classPath);
-            System.out.println(String.format("Scan java classpath:[%s]", classPath));
+            classPath = ClassFileUtils.decode(classPath);
+            log.info("Scan java classpath:[{}]", classPath);
             fillClasses(classPath, new File(classPath), scanPackage, classFilter, classes);
         }
         return classes;
     }
 
     public static void fillClasses(String path, String scanPackage, ClassFilter classFilter, Set<Class<?>> classes) {
-        if (ClassFile.isJar(path)) {
-            processJarFile(new File(ClassFile.parserJarPath(path)), scanPackage, classFilter, classes);
+        if (ClassFileUtils.isJar(path)) {
+            processJarFile(new File(ClassFileUtils.parserJarPath(path)), scanPackage, classFilter, classes);
         } else {
             fillClasses(path, new File(path), scanPackage, classFilter, classes);
         }
@@ -87,9 +91,9 @@ public class ScanClass {
                                     Set<Class<?>> classes) {
         if (file.isDirectory()) {
             processDirectory(classPath, file, scanPackage, classFilter, classes);
-        } else if (ClassFile.isClassFile(file)) {
+        } else if (ClassFileUtils.isClassFile(file)) {
             processClassFile(classPath, file, scanPackage, classFilter, classes);
-        } else if (ClassFile.isJarFile(file)) {
+        } else if (ClassFileUtils.isJarFile(file)) {
             processJarFile(file, scanPackage, classFilter, classes);
         }
     }
@@ -126,7 +130,7 @@ public class ScanClass {
         }
     }
 
-    private static Class<?> loadClass(ClassFile classFile, ClassFilter classFilter) {
+    private static Class<?> loadClass(ClassFileUtils classFile, ClassFilter classFilter) {
         if (classFile.isMatches()) {
             try {
                 final Class<?> clazz = Class.forName(classFile.getClassPath(), false, getClassLoader());
@@ -145,7 +149,7 @@ public class ScanClass {
     public static Set<String> getClassPaths(String scanPackage) {
         scanPackage = scanPackage.replace(".", "/");
         Enumeration<URL> resources = null;
-        try {// 如果传入“”返回classes路径
+        try {// If "" is passed, return classes path
             resources = getClassLoader().getResources(scanPackage);
         } catch (IOException e) {
             e.printStackTrace();
@@ -174,7 +178,7 @@ public class ScanClass {
     public static ClassLoader getClassLoader() {
         ClassLoader classLoader;// = Thread.currentThread().getContextClassLoader();
         // if (classLoader == null) {
-        classLoader = ScanClass.class.getClassLoader();
+        classLoader = ClassScanner.class.getClassLoader();
         // }
         return classLoader;
     }
