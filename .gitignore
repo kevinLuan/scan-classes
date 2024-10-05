@@ -4,5 +4,6 @@
 .settings/
 *.iml
 target/
-.DS_Store
 /.vscode/
+.DS_Store
+
