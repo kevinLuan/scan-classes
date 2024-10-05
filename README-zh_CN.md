@@ -8,6 +8,7 @@ scan-classes
 </div>
 
 [English](./README.md) | 简体中文
+
 ## 目录
 - [简述](#简述)
 - [特点](#特点)
@@ -34,9 +35,9 @@ Maven 项目在 'pom.xml' 文件中添加以下依赖：
 ```
 Gradle 项目添加以下依赖：
 ```groovy
-    dependencies {
-        implementation 'cn.taskflow:scan-classes:latest'
-    }
+dependencies {
+    implementation 'cn.taskflow:scan-classes:latest'
+}
 ```
 ### 示例
 
