@@ -18,6 +18,7 @@ package cn.taskflow.scan.test;
 
 import java.util.Set;
 
+import cn.taskflow.scan.core.ClassFilter;
 import cn.taskflow.scan.core.ClassScanner;
 import cn.taskflow.scan.pojo.Api;
 import org.junit.Assert;
@@ -26,10 +27,14 @@ import org.junit.Test;
 public class ScannerAnnotationTests {
     @Test
     public void test() {
-        Set<Class<?>> set = ClassScanner.scanPackage("cn.taskflow.scan", (clazz) -> clazz.getAnnotation(Api.class) != null);
+        //Scan packages: cn.taskflow.scan All classes below that use @Api on them
+        Set<Class<?>> set = ClassScanner.scanPackage("cn.taskflow.scan", (clazz) -> {
+            return clazz.getAnnotation(Api.class) != null;
+        });
         for (Class<?> clazz : set) {
             System.out.println(clazz);
         }
         Assert.assertTrue(set.size() >= 4);
     }
+
 }

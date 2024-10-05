@@ -41,19 +41,11 @@ Gradle 项目添加以下依赖：
 ### 示例
 
 ```java
-public class MainRun {
-	public static void main(String[] args) {
-        //Scan packages: cn.taskflow.scan All classes below that use @Api on them
-		Set<Class<?>> set = ScanClass.scanPackage("cn.taskflow.scan", new ClassFilter() {
-
-			@Override
-			public boolean accept(Class<?> clazz) {
-				return clazz.getAnnotation(Api.class) != null;
-			}
-		});
-		for (Class<?> clazz : set) {
-			System.out.println(clazz);
-		}
-	}
-}
+    //Scan packages: cn.taskflow.scan All classes below that use @Api on them
+    Set<Class<?>> set = ClassScanner.scanPackage("cn.taskflow.scan", (clazz) -> {
+        return clazz.getAnnotation(Api.class) != null;
+    });
+    for (Class<?> clazz : set) {
+        System.out.println(clazz);
+    }
 ```
