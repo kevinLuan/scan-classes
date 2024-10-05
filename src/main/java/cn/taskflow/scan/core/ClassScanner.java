@@ -100,14 +100,14 @@ public class ClassScanner {
 
     private static void processDirectory(String classPath, File directory, String packageName, ClassFilter classFilter,
                                          Set<Class<?>> classes) {
-        for (File file : directory.listFiles(ClassFileFilter.INSTANCE)) {
+        for (File file : directory.listFiles(ClassAndJarFileFilter.INSTANCE)) {
             fillClasses(classPath, file, packageName, classFilter, classes);
         }
     }
 
     private static void processClassFile(String classPath, File file, String packageName, ClassFilter classFilter,
                                          Set<Class<?>> classes) {
-        ClassEntity filePathEntity = new ClassEntity(file, packageName, classPath);
+        ClassInfo filePathEntity = new ClassInfo(file, packageName, classPath);
         Class<?> clazz = loadClass(filePathEntity, classFilter);
         if (clazz != null) {
             classes.add(clazz);
@@ -117,9 +117,9 @@ public class ClassScanner {
     private static void processJarFile(File file, String scanPackage, ClassFilter classFilter, Set<Class<?>> classes) {
         try {
             for (JarEntry entry : Collections.list(new JarFile(file).entries())) {
-                JarClass jarClass = new JarClass(entry, scanPackage);
-                if (jarClass.isClass()) {
-                    Class<?> clazz = loadClass(jarClass, classFilter);
+                JarClassEntry jarClassEntry = new JarClassEntry(entry, scanPackage);
+                if (jarClassEntry.isClass()) {
+                    Class<?> clazz = loadClass(jarClassEntry, classFilter);
                     if (clazz != null) {
                         classes.add(clazz);
                     }

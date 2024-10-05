@@ -14,22 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.taskflow.scan.core;
+package cn.taskflow.scan.pojo;
 
-/**
- * String utils
- */
-class StringUtils {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    public static boolean isBlank(String str) {
-        return !isNotBlank(str);
-    }
-
-    public static boolean isNotBlank(String str) {
-        if (str != null && str.trim().length() > 0) {
-            return true;
-        }
-        return false;
-    }
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Api {
 
 }

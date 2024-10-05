@@ -51,7 +51,7 @@ public class CopyClassUtils {
     public static String OutputPath;
 
     public static void main(String[] args) throws IOException {
-        CopyClassUtils.copying("com", "*");
+        CopyClassUtils.copying("cn", "*");
     }
 
     private static String formatName(String name) {

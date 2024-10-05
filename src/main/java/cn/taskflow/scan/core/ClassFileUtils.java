@@ -16,6 +16,8 @@
  */
 package cn.taskflow.scan.core;
 
+import cn.taskflow.scan.utils.StringUtils;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

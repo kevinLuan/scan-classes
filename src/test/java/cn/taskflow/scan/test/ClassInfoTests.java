@@ -14,31 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.taskflow.scan;
+package cn.taskflow.scan.test;
 
 import java.io.File;
 
-import cn.taskflow.scan.core.ClassEntity;
+import cn.taskflow.scan.core.ClassInfo;
 import org.junit.Test;
 
 import junit.framework.Assert;
 
-public class ClassEntityTest {
+public class ClassInfoTests {
     @Test
     public void test() {
         File file = new File("/r1/r2/r3/com/xx/MyClass.class");
         String scanPackage = "com.xx";
         String searchClassPath = "/r1/r2/r3/com/xx";
-        ClassEntity classEntity = new ClassEntity(file, scanPackage, searchClassPath);
-        Assert.assertEquals(classEntity.getClassPath(), "com.xx.MyClass");
+        ClassInfo classInfo = new ClassInfo(file, scanPackage, searchClassPath);
+        Assert.assertEquals(classInfo.getClassPath(), "com.xx.MyClass");
     }
 
     @Test
     public void test_1() {
-        File file = new File(ClassEntity.class.getResource("").getPath());
+        File file = new File(ClassInfo.class.getResource("").getPath());
         String scanPackage = "com.classes.scan.";
         String searchClassPath = "/Users/kevin/Desktop/scan-classes/target/";
-        ClassEntity entity = new ClassEntity(file, scanPackage, searchClassPath);
+        ClassInfo entity = new ClassInfo(file, scanPackage, searchClassPath);
         //        Assert.assertEquals(entity.getClassPath(), "cn.taskflow.scan.ClassEntity");
     }
 
@@ -47,8 +47,8 @@ public class ClassEntityTest {
         File file = new File("/r1/r2/r3/com/xx/MyClass.class");
         String scanPackage = "com.xx";
         String searchClassPath = "/r1/r2/r3/com/xx";
-        ClassEntity classEntity = new ClassEntity(file, scanPackage, searchClassPath);
-        Assert.assertEquals(classEntity.getClassPath(), "com.xx.MyClass");
-        Assert.assertTrue(classEntity.isMatches());
+        ClassInfo classInfo = new ClassInfo(file, scanPackage, searchClassPath);
+        Assert.assertEquals(classInfo.getClassPath(), "com.xx.MyClass");
+        Assert.assertTrue(classInfo.isMatches());
     }
 }

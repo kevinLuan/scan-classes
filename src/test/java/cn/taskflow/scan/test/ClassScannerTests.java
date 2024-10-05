@@ -18,19 +18,33 @@ package cn.taskflow.scan.test;
 
 import java.util.Set;
 
-import cn.taskflow.scan.core.ClassFilter;
 import cn.taskflow.scan.core.ClassScanner;
+import org.junit.Test;
 
-public class MainRun {
-    public static void main(String[] args) {
-        Set<Class<?>> set = ClassScanner.scanPackage("cn.taskflow.scan", new ClassFilter() {
+public class ClassScannerTests {
 
-            @Override
-            public boolean accept(Class<?> clazz) {
-                return true;
-            }
-        });
-        for (Class<?> clazz : set) {
+    @Test
+    public void test() {
+        Set<Class<?>> packageSet = ClassScanner.scanPackage();
+        for (Class<?> clazz : packageSet) {
+            System.out.println(clazz);
+        }
+        System.out.println(packageSet.size());
+    }
+
+    @Test
+    public void testScan() {
+        Set<Class<?>> packageSet = ClassScanner.scanPackage("cn.taskflow.scan");
+        for (Class<?> clazz : packageSet) {
+            System.out.println(clazz);
+        }
+        System.out.println(packageSet.size());
+    }
+
+    @Test
+    public void testScan_com() {
+        Set<Class<?>> packageSet = ClassScanner.scanPackage("cn.taskflow");
+        for (Class<?> clazz : packageSet) {
             System.out.println(clazz);
         }
     }

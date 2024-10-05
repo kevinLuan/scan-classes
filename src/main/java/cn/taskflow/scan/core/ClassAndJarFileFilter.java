@@ -22,8 +22,8 @@ import java.io.FileFilter;
 /**
  * Class file filter
  */
-public class ClassFileFilter implements FileFilter {
-    public static final ClassFileFilter INSTANCE = new ClassFileFilter();
+public class ClassAndJarFileFilter implements FileFilter {
+    public static final ClassAndJarFileFilter INSTANCE = new ClassAndJarFileFilter();
 
     @Override
     public boolean accept(File pathname) {

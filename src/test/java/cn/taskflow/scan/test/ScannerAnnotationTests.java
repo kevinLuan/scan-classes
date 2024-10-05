@@ -14,38 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.taskflow.scan;
+package cn.taskflow.scan.test;
 
 import java.util.Set;
 
 import cn.taskflow.scan.core.ClassScanner;
+import cn.taskflow.scan.pojo.Api;
+import org.junit.Assert;
 import org.junit.Test;
 
-public class ScanClassTest {
-
+public class ScannerAnnotationTests {
     @Test
     public void test() {
-        Set<Class<?>> packageSet = ClassScanner.scanPackage();
-        for (Class<?> clazz : packageSet) {
+        Set<Class<?>> set = ClassScanner.scanPackage("cn.taskflow.scan", (clazz) -> clazz.getAnnotation(Api.class) != null);
+        for (Class<?> clazz : set) {
             System.out.println(clazz);
         }
-        System.out.println(packageSet.size());
-    }
-
-    @Test
-    public void testScan() {
-        Set<Class<?>> packageSet = ClassScanner.scanPackage("cn.taskflow.scan");
-        for (Class<?> clazz : packageSet) {
-            System.out.println(clazz);
-        }
-        System.out.println(packageSet.size());
-    }
-
-    @Test
-    public void testScan_com() {
-        Set<Class<?>> packageSet = ClassScanner.scanPackage("cn.taskflow");
-        for (Class<?> clazz : packageSet) {
-            System.out.println(clazz);
-        }
+        Assert.assertTrue(set.size() >= 4);
     }
 }

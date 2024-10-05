@@ -22,11 +22,11 @@ import java.util.jar.JarEntry;
 /**
  * Jar class
  */
-public class JarClass extends ClassFileUtils {
+public class JarClassEntry extends ClassFileUtils {
     private JarEntry jarEntry;
     private String   scanPackage;
 
-    public JarClass(JarEntry entry, String scanPackage) {
+    public JarClassEntry(JarEntry entry, String scanPackage) {
         this.jarEntry = entry;
         this.scanPackage = scanPackage;
     }

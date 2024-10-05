@@ -14,27 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.taskflow.scan;
+package cn.taskflow.scan.utils;
 
-import java.util.jar.JarEntry;
+/**
+ * String utils
+ */
+public class StringUtils {
 
-import cn.taskflow.scan.core.JarClass;
-import junit.framework.Assert;
-
-import org.junit.Test;
-
-public class JarClassTest {
-    @Test
-    public void test() {
-        JarEntry entry = new JarEntry("com/xxx/xxx/MyClass.class");
-        JarClass jarClass = new JarClass(entry, "com");
-        Assert.assertEquals(jarClass.getClassPath(), "com.xxx.xxx.MyClass");
+    public static boolean isBlank(String str) {
+        return !isNotBlank(str);
     }
 
-    @Test
-    public void matches() {
-        JarEntry entry = new JarEntry("com/xxx/xxx/MyClass.class");
-        JarClass jarClass = new JarClass(entry, "com");
-        Assert.assertTrue(jarClass.isMatches());
+    public static boolean isNotBlank(String str) {
+        if (str != null && str.trim().length() > 0) {
+            return true;
+        }
+        return false;
     }
+
 }

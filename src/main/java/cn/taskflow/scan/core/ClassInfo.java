@@ -16,9 +16,11 @@
  */
 package cn.taskflow.scan.core;
 
+import cn.taskflow.scan.utils.StringUtils;
+
 import java.io.File;
 
-public class ClassEntity extends ClassFileUtils {
+public class ClassInfo extends ClassFileUtils {
     private File   file;
     /**
      * Scan package
@@ -29,7 +31,7 @@ public class ClassEntity extends ClassFileUtils {
      */
     private String classPath;
 
-    public ClassEntity(File file, String scanPackage, String searchClassPath) {
+    public ClassInfo(File file, String scanPackage, String searchClassPath) {
         if (false == searchClassPath.endsWith(File.separator)) {
             searchClassPath += File.separator;// Scan CLASS directory: project Class directory + PackageName
         }
