@@ -19,11 +19,14 @@ package cn.taskflow.scan.core;
 import java.io.File;
 import java.util.jar.JarEntry;
 
-public class JarClass extends ClassFile {
+/**
+ * Jar class
+ */
+public class JarClassEntry extends ClassFileUtils {
     private JarEntry jarEntry;
     private String   scanPackage;
 
-    public JarClass(JarEntry entry, String scanPackage) {
+    public JarClassEntry(JarEntry entry, String scanPackage) {
         this.jarEntry = entry;
         this.scanPackage = scanPackage;
     }
@@ -33,9 +36,8 @@ public class JarClass extends ClassFile {
     }
 
     /**
-     * 获取Class类名称 x.x.x.MyClass
+     * Get the Class name x.x.x.MyClass
      * 
-     * @param className
      * @return
      */
     public String getClassPath() {

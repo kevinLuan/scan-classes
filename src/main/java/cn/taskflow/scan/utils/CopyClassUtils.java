@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 /**
- * 
+ *
  */
 package cn.taskflow.scan.utils;
 
@@ -32,23 +32,26 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import cn.taskflow.scan.core.ScanClass;
-import cn.taskflow.scan.core.ClassFile;
+import cn.taskflow.scan.core.ClassFileUtils;
+import cn.taskflow.scan.core.ClassScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Copying class file
- * 
- * @CreateTime 2016年5月18日 上午10:08:20
+ *
  * @author KEVIN LUAN
+ * @CreateTime 2016-05-18 10:08:20
  */
 public class CopyClassUtils {
+    final static Logger  log = LoggerFactory.getLogger(CopyClassUtils.class);
     /**
-     * 输出路径, 例如：/data/code/api/
+     * Output path, for example: /data/code/api/
      */
     public static String OutputPath;
 
     public static void main(String[] args) throws IOException {
-        CopyClassUtils.copying("com", "*");
+        CopyClassUtils.copying("cn", "*");
     }
 
     private static String formatName(String name) {
@@ -60,10 +63,10 @@ public class CopyClassUtils {
     }
 
     /**
-     * 验证匹配Copy Class，如果是内部类，也可以通过验证
-     * 
-     * @param name Class 文件名称
-     * @param matchesModel 匹配模式
+     * Verify matching Copy Class, if it's an inner class, it can also pass verification
+     *
+     * @param name         Class file name
+     * @param matchesModel Matching pattern
      * @return
      */
     private static boolean isMatches(String name, String matchesModel) {
@@ -73,7 +76,7 @@ public class CopyClassUtils {
         name = formatName(name);
         matchesModel = formatName(matchesModel);
         matchesModel = matchesModel.replace("*", ".*");
-        { // 处理匿名内部类
+        { // Handle anonymous inner classes
             if (name.indexOf("$") > 0) {
                 name = name.substring(0, name.indexOf("$"));
             }
@@ -101,22 +104,22 @@ public class CopyClassUtils {
 
     /**
      * Copy the Class file, supporting Jar package or the classpath
-     * 
-     * @param scanPackage 扫描包路径
-     * @param matchesModel 匹配模式，支持*任意字符，例如 ab* or *b* or *bc
+     *
+     * @param scanPackage  Package path to scan
+     * @param matchesModel Matching pattern, supports * for any character, e.g. ab* or *b* or *bc
      * @throws IOException
      */
     public static void copying(String scanPackage, final String matchesModel) throws IOException {
-        scanPackage = ClassFile.formatScanPackage(scanPackage);
+        scanPackage = ClassFileUtils.formatScanPackage(scanPackage);
         for (String classPath : getClassPaths(scanPackage)) {
-            classPath = ClassFile.decode(classPath);
+            classPath = ClassFileUtils.decode(classPath);
             if (classPath.startsWith("file:") && classPath.indexOf(".jar!") > 0) {
-                System.out.println(String.format("Scan jar classpath:[%s]", classPath));
+                log.info("Scan jar classpath:[{}]", classPath);
                 String jarPath = classPath.substring(5, classPath.indexOf("!"));
                 String pack = scanPackage.replace(".", "/");
                 fromJarCopy(jarPath, pack, matchesModel);
             } else {
-                System.out.println(String.format("Scan java classpath:[%s]", classPath));
+                log.info("Scan java classpath:[{}]", classPath);
                 File file = new File(classPath);
                 File[] files = file.listFiles(new FileFilter() {
 
@@ -143,8 +146,7 @@ public class CopyClassUtils {
                     if (!parentFile.exists()) {
                         parentFile.mkdirs();
                     }
-                    System.out.println("[copying] " + scanPackage + "." + files[i].getName() + " to "
-                                       + destFile.getAbsolutePath());
+                    log.info("[copying] {}.{} to {}", scanPackage, files[i].getName(), destFile.getAbsolutePath());
                     FileOutputStream fos = new FileOutputStream(destFile);
                     fos.write(data);
                     fos.flush();
@@ -157,10 +159,10 @@ public class CopyClassUtils {
     public static Set<String> getClassPaths(String scanPackage) {
         scanPackage = scanPackage.replace(".", "/");
         Enumeration<URL> resources = null;
-        try {// 如果传入“”返回classes路径
-            resources = ScanClass.getClassLoader().getResources(scanPackage);
+        try {// If "" is passed, return the classes path
+            resources = ClassScanner.getClassLoader().getResources(scanPackage);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("getClassPaths(" + scanPackage + ") error ", e);
         }
         Set<String> paths = new HashSet<String>();
         while (resources.hasMoreElements()) {
@@ -170,8 +172,8 @@ public class CopyClassUtils {
     }
 
     /**
-     * 默认拷贝到当前项目中的./target/api/ 下面
-     * 
+     * By default, copy to ./target/api/ in the current project
+     *
      * @return
      */
     private static String getOutPath() {
@@ -215,23 +217,22 @@ public class CopyClassUtils {
             if (file.isDirectory()) {
                 if (!file.exists()) {
                     file.mkdirs();
-                    System.out.println("create path:" + file.getParentFile() + "|status:" + file.mkdirs());
+                    log.info("create path:{}|status: {}", file.getParentFile(), file.mkdirs());
                 }
                 return;
             } else {
                 File parentFile = file.getParentFile();
                 if (!parentFile.exists()) {
-                    System.out
-                        .println("create path:" + parentFile.getAbsolutePath() + "|status:" + parentFile.mkdirs());
+                    log.info("create path:{} |status:{}", parentFile.getAbsolutePath(), parentFile.mkdirs());
                 }
             }
-            System.out.println("[copying] " + entry.getName() + " to " + file.getAbsolutePath());
+            log.info("[copying] {} to {}", entry.getName(), file.getAbsolutePath());
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(data);
             fos.flush();
             fos.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("copy error", e);
         }
     }
 }

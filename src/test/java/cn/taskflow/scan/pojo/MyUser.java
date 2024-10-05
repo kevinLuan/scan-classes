@@ -14,9 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.taskflow.scan.test;
+package cn.taskflow.scan.pojo;
 
+/**
+ * @author SHOUSHEN.LUAN
+ * @since 2024-10-05
+ */
 @Api
-public class TestN {
-
+public class MyUser {
 }

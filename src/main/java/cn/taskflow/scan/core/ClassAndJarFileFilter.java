@@ -14,27 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.taskflow.scan;
+package cn.taskflow.scan.core;
 
-import java.util.jar.JarEntry;
+import java.io.File;
+import java.io.FileFilter;
 
-import cn.taskflow.scan.core.JarClass;
-import junit.framework.Assert;
+/**
+ * Class file filter
+ */
+public class ClassAndJarFileFilter implements FileFilter {
+    public static final ClassAndJarFileFilter INSTANCE = new ClassAndJarFileFilter();
 
-import org.junit.Test;
-
-public class JarClassTest {
-    @Test
-    public void test() {
-        JarEntry entry = new JarEntry("com/xxx/xxx/MyClass.class");
-        JarClass jarClass = new JarClass(entry, "com");
-        Assert.assertEquals(jarClass.getClassPath(), "com.xxx.xxx.MyClass");
-    }
-
-    @Test
-    public void matches() {
-        JarEntry entry = new JarEntry("com/xxx/xxx/MyClass.class");
-        JarClass jarClass = new JarClass(entry, "com");
-        Assert.assertTrue(jarClass.isMatches());
+    @Override
+    public boolean accept(File pathname) {
+        return ClassFileUtils.isClass(pathname.getName()) || pathname.isDirectory()
+               || ClassFileUtils.isJarFile(pathname);
     }
 }

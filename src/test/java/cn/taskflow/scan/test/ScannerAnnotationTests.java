@@ -14,23 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.taskflow.scan;
+package cn.taskflow.scan.test;
 
-import cn.taskflow.scan.core.ClassEntity;
-import cn.taskflow.scan.core.ClassFile;
-import cn.taskflow.scan.utils.MavenDeployJarUtils;
+import java.util.Set;
 
-public class ScanNativeFileTest {
-    public static final String PATH = "/Users/kevin/JAVA_HOME/";
+import cn.taskflow.scan.core.ClassFilter;
+import cn.taskflow.scan.core.ClassScanner;
+import cn.taskflow.scan.pojo.Api;
+import org.junit.Assert;
+import org.junit.Test;
 
-    public static void main(String arg[]) throws Exception {
-        String groupId = "com.x.x";
-        String artifactId = "x";
-        String version = "0.0.0-SNAPSHOT";
-        String url = "http://xxx/nexus/content/repositories/snapshots/";
-        // 增加匿名类Copy支持
-        Class<?> clazzs[] = new Class<?>[] { ClassEntity.class, ClassFile.class };
-        MavenDeployJarUtils.start(groupId, artifactId, version, url, clazzs);
+public class ScannerAnnotationTests {
+    @Test
+    public void test() {
+        //Scan packages: cn.taskflow.scan All classes below that use @Api on them
+        Set<Class<?>> set = ClassScanner.scanPackage("cn.taskflow.scan", (clazz) -> {
+            return clazz.getAnnotation(Api.class) != null;
+        });
+        for (Class<?> clazz : set) {
+            System.out.println(clazz);
+        }
+        Assert.assertTrue(set.size() >= 4);
     }
 
 }

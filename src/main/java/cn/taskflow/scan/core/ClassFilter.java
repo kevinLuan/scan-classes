@@ -16,6 +16,10 @@
  */
 package cn.taskflow.scan.core;
 
+/**
+ * Class filter
+ */
+@FunctionalInterface
 public interface ClassFilter {
     boolean accept(Class<?> clazz);
 }

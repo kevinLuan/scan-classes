@@ -14,16 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.taskflow.scan.core;
+package cn.taskflow.scan.pojo;
 
-import java.io.File;
-import java.io.FileFilter;
+/**
+ * @author SHOUSHEN.LUAN
+ * @since 2024-10-05
+ */
+@Api
+public class MultiPojo {
+    @Api
+    public static class MyBean1 {
 
-public class ClassFileFilter implements FileFilter {
-    public static final ClassFileFilter INSTANCE = new ClassFileFilter();
+    }
 
-    @Override
-    public boolean accept(File pathname) {
-        return ClassFile.isClass(pathname.getName()) || pathname.isDirectory() || ClassFile.isJarFile(pathname);
+    @Api
+    public static class MyBean2 {
+
     }
 }

@@ -14,9 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.taskflow.scan.test;
+package cn.taskflow.scan.utils;
 
-@Api
-public class TestA {
+/**
+ * String utils
+ */
+public class StringUtils {
+
+    public static boolean isBlank(String str) {
+        return !isNotBlank(str);
+    }
+
+    public static boolean isNotBlank(String str) {
+        if (str != null && str.trim().length() > 0) {
+            return true;
+        }
+        return false;
+    }
 
 }

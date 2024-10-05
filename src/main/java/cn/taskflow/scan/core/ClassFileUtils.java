@@ -16,12 +16,14 @@
  */
 package cn.taskflow.scan.core;
 
+import cn.taskflow.scan.utils.StringUtils;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-public abstract class ClassFile {
-    /** Jar中的文件路径jar的扩展名形式 */
+public abstract class ClassFileUtils {
+    /** File path extension for JAR files */
     public static final String JAR_PATH_EXT = ".jar!";
 
     public abstract String getClassPath();
@@ -31,16 +33,16 @@ public abstract class ClassFile {
     public abstract String getScanPackage();
 
     /**
-     * @param file 文件
-     * @return 是否为类文件
+     * @param file File
+     * @return Whether it is a class file
      */
     public static boolean isClassFile(File file) {
         return isClass(file.getName());
     }
 
     /**
-     * @param fileName 文件名
-     * @return 是否为类文件
+     * @param fileName File name
+     * @return Whether it is a class file
      */
     public static boolean isClass(String fileName) {
         return fileName.endsWith(".class");
@@ -63,7 +65,7 @@ public abstract class ClassFile {
     }
 
     /**
-     * Class文件路径或者所在目录Jar包路径
+     * Class file path or the path of the JAR file containing it
      * 
      * @param path
      * @return
@@ -71,9 +73,9 @@ public abstract class ClassFile {
     public static String parserJarPath(String path) {
         int index = path.lastIndexOf(JAR_PATH_EXT);
         if (index != -1) {
-            path = path.substring(0, index + ".jar".length()); // 截取jar路径
+            path = path.substring(0, index + ".jar".length()); // Extract JAR path
         }
-        path = ClassFile.removeFilePrefix(path);
+        path = ClassFileUtils.removeFilePrefix(path);
         return path;
     }
 
@@ -88,7 +90,7 @@ public abstract class ClassFile {
     public static String formatScanPackage(String packagePath) {
         if (StringUtils.isNotBlank(packagePath)) {
             if (packagePath.charAt(packagePath.length() - 1) != '.') {
-                packagePath += ".";// 处理扫描：com 把 comx 给扫描出来的现象
+                packagePath += ".";// Handle scanning: prevent 'com' from scanning out 'comx'
             }
         } else if (packagePath == null) {
             return "";

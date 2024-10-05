@@ -16,13 +16,25 @@
  */
 package cn.taskflow.scan.test;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.jar.JarEntry;
 
-@Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE })
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Api {
+import cn.taskflow.scan.core.JarClassEntry;
+import junit.framework.Assert;
 
+import org.junit.Test;
+
+public class JarClassEntryTests {
+    @Test
+    public void test() {
+        JarEntry entry = new JarEntry("com/xxx/xxx/MyClass.class");
+        JarClassEntry jarClassEntry = new JarClassEntry(entry, "com");
+        Assert.assertEquals(jarClassEntry.getClassPath(), "com.xxx.xxx.MyClass");
+    }
+
+    @Test
+    public void matches() {
+        JarEntry entry = new JarEntry("com/xxx/xxx/MyClass.class");
+        JarClassEntry jarClassEntry = new JarClassEntry(entry, "com");
+        Assert.assertTrue(jarClassEntry.isMatches());
+    }
 }

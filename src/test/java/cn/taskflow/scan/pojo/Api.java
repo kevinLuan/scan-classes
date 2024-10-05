@@ -14,27 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.taskflow.scan;
+package cn.taskflow.scan.pojo;
 
-import cn.taskflow.scan.core.ClassFilter;
-import cn.taskflow.scan.core.ScanClass;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.util.HashSet;
-import java.util.Set;
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Api {
 
-public class ScanSpringBootProjectTest {
-    public static void main(String[] args) {
-        String file = "/Users/kevin/java_home/open/route/target/route.jar!/BOOT-INF/classes!/com/hivescm/open/api/";
-        Set<Class<?>> classes = new HashSet<Class<?>>();
-        ScanClass.fillClasses(file, "com.hivescm.open.api", new ClassFilter() {
-
-            @Override
-            public boolean accept(Class<?> clazz) {
-                //				return clazz.getAnnotation(Api.class)!=null;
-                return true;
-            }
-
-        }, classes);
-        System.out.println(classes.size());
-    }
 }
