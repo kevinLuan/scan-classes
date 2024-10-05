@@ -16,10 +16,8 @@ Lightweight java class scanner library
 
 
 ## Installation
-To integrate TaskFlow into your Java project.
-
-The Maven project adds the following dependency to your 'pom.xml' file：
-Maven dependency
+To integrate the project into your Java project.
+The Maven project adds the following dependencies to the 'pom.xml' file:
 ```xml
 <dependency>
     <groupId>cn.taskflow</groupId>
