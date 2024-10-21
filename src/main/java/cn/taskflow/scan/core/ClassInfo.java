@@ -16,10 +16,14 @@
  */
 package cn.taskflow.scan.core;
 
-import cn.taskflow.scan.utils.StringUtils;
+import cn.taskflow.scan.utils.SCUtils;
 
 import java.io.File;
 
+/**
+ * ClassInfo represents information about a class file.
+ * It extends ClassFileUtils to provide utility methods for class file operations.
+ */
 public class ClassInfo extends ClassFileUtils {
     private File   file;
     /**
@@ -31,26 +35,32 @@ public class ClassInfo extends ClassFileUtils {
      */
     private String classPath;
 
+    /**
+     * Constructs a ClassInfo object with the specified file, scan package, and search class path.
+     *
+     * @param file the class file
+     * @param scanPackage the package to scan
+     * @param searchClassPath the search path for the class file
+     */
     public ClassInfo(File file, String scanPackage, String searchClassPath) {
         if (false == searchClassPath.endsWith(File.separator)) {
-            searchClassPath += File.separator;// Scan CLASS directory: project Class directory + PackageName
+            searchClassPath += File.separator; // Scan CLASS directory: project Class directory + PackageName
         }
         this.file = file;
         this.scanPackage = scanPackage;
         this.classPath = searchClassPath;
-
     }
 
     /**
-     * Returns com.xx.MyClass
-     * 
-     * @return
+     * Returns the class path in the format com.xx.MyClass.
+     *
+     * @return the class path
      */
     public String getClassPath() {
         int index = classPath.indexOf(scanPackage.replace(".", File.separator));
         int last = ".class".length();
         String path = file.getAbsolutePath();
-        if (StringUtils.isBlank(scanPackage)) {
+        if (SCUtils.isBlank(scanPackage)) {
             index = classPath.length();
         }
         if (index == -1) {
@@ -61,6 +71,11 @@ public class ClassInfo extends ClassFileUtils {
         return class_path;
     }
 
+    /**
+     * Returns a string representation of the ClassInfo object.
+     *
+     * @return a string representation of the ClassInfo object
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -72,6 +87,11 @@ public class ClassInfo extends ClassFileUtils {
         return builder.toString();
     }
 
+    /**
+     * Checks if the class path matches the scan package.
+     *
+     * @return true if the class path matches the scan package, false otherwise
+     */
     public boolean isMatches() {
         String classPath = getClassPath();
         if (classPath != null) {
@@ -80,6 +100,11 @@ public class ClassInfo extends ClassFileUtils {
         return false;
     }
 
+    /**
+     * Returns the scan package.
+     *
+     * @return the scan package
+     */
     @Override
     public String getScanPackage() {
         if (scanPackage == null) {

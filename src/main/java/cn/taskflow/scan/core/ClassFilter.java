@@ -17,9 +17,15 @@
 package cn.taskflow.scan.core;
 
 /**
- * Class filter
+ * Class filter interface used to determine if a class should be accepted or not.
  */
 @FunctionalInterface
 public interface ClassFilter {
+    /**
+     * Determines if the given class should be accepted.
+     *
+     * @param clazz the class to be tested
+     * @return true if the class is accepted, false otherwise
+     */
     boolean accept(Class<?> clazz);
 }

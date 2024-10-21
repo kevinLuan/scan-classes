@@ -21,10 +21,17 @@ import java.io.FileFilter;
 
 /**
  * Class file filter
+ * This filter is used to accept files that are either class files, directories, or jar files.
  */
 public class ClassAndJarFileFilter implements FileFilter {
     public static final ClassAndJarFileFilter INSTANCE = new ClassAndJarFileFilter();
 
+    /**
+     * Accepts a file if it is a class file, a directory, or a jar file.
+     *
+     * @param pathname the file to be tested
+     * @return true if the file is a class file, a directory, or a jar file; false otherwise
+     */
     @Override
     public boolean accept(File pathname) {
         return ClassFileUtils.isClass(pathname.getName()) || pathname.isDirectory()
