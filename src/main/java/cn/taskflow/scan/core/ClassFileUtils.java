@@ -16,7 +16,7 @@
  */
 package cn.taskflow.scan.core;
 
-import cn.taskflow.scan.utils.StringUtils;
+import cn.taskflow.scan.utils.SCUtils;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -33,6 +33,8 @@ public abstract class ClassFileUtils {
     public abstract String getScanPackage();
 
     /**
+     * Checks if the given file is a class file.
+     *
      * @param file File
      * @return Whether it is a class file
      */
@@ -41,6 +43,8 @@ public abstract class ClassFileUtils {
     }
 
     /**
+     * Checks if the given file name corresponds to a class file.
+     *
      * @param fileName File name
      * @return Whether it is a class file
      */
@@ -48,15 +52,33 @@ public abstract class ClassFileUtils {
         return fileName.endsWith(".class");
     }
 
+    /**
+     * Checks if the given file is a JAR file.
+     *
+     * @param file File
+     * @return Whether it is a JAR file
+     */
     public static boolean isJarFile(File file) {
         return file.getName().endsWith(".jar");
     }
 
+    /**
+     * Checks if the given path corresponds to a JAR file.
+     *
+     * @param path Path
+     * @return Whether it is a JAR file
+     */
     public static boolean isJar(String path) {
         int index = path.lastIndexOf(JAR_PATH_EXT);
         return index != -1;
     }
 
+    /**
+     * Removes the "file:" prefix from the given path if it exists.
+     *
+     * @param path Path
+     * @return Path without the "file:" prefix
+     */
     public static String removeFilePrefix(String path) {
         if (path.startsWith("file:")) {
             return path.substring("file:".length());
@@ -65,10 +87,10 @@ public abstract class ClassFileUtils {
     }
 
     /**
-     * Class file path or the path of the JAR file containing it
+     * Parses the JAR file path from the given path.
      * 
-     * @param path
-     * @return
+     * @param path Path
+     * @return JAR file path
      */
     public static String parserJarPath(String path) {
         int index = path.lastIndexOf(JAR_PATH_EXT);
@@ -79,6 +101,12 @@ public abstract class ClassFileUtils {
         return path;
     }
 
+    /**
+     * Decodes the given string using UTF-8 encoding.
+     *
+     * @param str String to decode
+     * @return Decoded string
+     */
     public static String decode(String str) {
         try {
             str = URLDecoder.decode(str, "UTF-8");
@@ -87,8 +115,14 @@ public abstract class ClassFileUtils {
         return str;
     }
 
+    /**
+     * Formats the scan package path by ensuring it ends with a dot.
+     *
+     * @param packagePath Package path
+     * @return Formatted package path
+     */
     public static String formatScanPackage(String packagePath) {
-        if (StringUtils.isNotBlank(packagePath)) {
+        if (SCUtils.isNotBlank(packagePath)) {
             if (packagePath.charAt(packagePath.length() - 1) != '.') {
                 packagePath += ".";// Handle scanning: prevent 'com' from scanning out 'comx'
             }

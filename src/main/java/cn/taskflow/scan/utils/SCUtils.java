@@ -19,7 +19,7 @@ package cn.taskflow.scan.utils;
 /**
  * String utils
  */
-public class StringUtils {
+public class SCUtils {
 
     public static boolean isBlank(String str) {
         return !isNotBlank(str);

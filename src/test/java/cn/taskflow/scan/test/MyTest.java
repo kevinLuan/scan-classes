@@ -14,27 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.taskflow.scan.core;
+package cn.taskflow.scan.test;
 
-import java.io.File;
-import java.io.FileFilter;
+import cn.taskflow.scan.core.ClassScanner;
+
+import java.util.Set;
 
 /**
- * Class file filter
- * This filter is used to accept files that are either class files, directories, or jar files.
+ * @author SHOUSHEN.LUAN
+ * @since 2024-10-21
  */
-public class ClassAndJarFileFilter implements FileFilter {
-    public static final ClassAndJarFileFilter INSTANCE = new ClassAndJarFileFilter();
-
-    /**
-     * Accepts a file if it is a class file, a directory, or a jar file.
-     *
-     * @param pathname the file to be tested
-     * @return true if the file is a class file, a directory, or a jar file; false otherwise
-     */
-    @Override
-    public boolean accept(File pathname) {
-        return ClassFileUtils.isClass(pathname.getName()) || pathname.isDirectory()
-               || ClassFileUtils.isJarFile(pathname);
+public class MyTest {
+    public static void main(String[] args) {
+        Set<Class<?>> set = ClassScanner.scanPackage("cn.taskflow");
+        for (Class<?> aClass : set) {
+            System.out.println(aClass.getName());
+        }
     }
 }

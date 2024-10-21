@@ -20,25 +20,38 @@ import java.io.File;
 import java.util.jar.JarEntry;
 
 /**
- * Jar class
+ * Jar class entry
+ * This class represents an entry in a JAR file and provides methods to check if the entry is a class file,
+ * get the class path, and check if the class path matches a specified package.
  */
 public class JarClassEntry extends ClassFileUtils {
     private JarEntry jarEntry;
     private String   scanPackage;
 
+    /**
+     * Constructs a JarClassEntry object with the specified JAR entry and scan package.
+     *
+     * @param entry the JAR entry
+     * @param scanPackage the package to scan
+     */
     public JarClassEntry(JarEntry entry, String scanPackage) {
         this.jarEntry = entry;
         this.scanPackage = scanPackage;
     }
 
+    /**
+     * Checks if the JAR entry is a class file.
+     *
+     * @return true if the JAR entry is a class file, false otherwise
+     */
     public boolean isClass() {
         return jarEntry.getName().endsWith(".class");
     }
 
     /**
-     * Get the Class name x.x.x.MyClass
-     * 
-     * @return
+     * Gets the class path in the format x.x.x.MyClass.
+     *
+     * @return the class path
      */
     public String getClassPath() {
         // entry.getName() = com/xxx/xxx/MyClass.class
@@ -53,10 +66,20 @@ public class JarClassEntry extends ClassFileUtils {
         return className;
     }
 
+    /**
+     * Checks if the class path matches the scan package.
+     *
+     * @return true if the class path matches the scan package, false otherwise
+     */
     public boolean isMatches() {
         return getClassPath().startsWith(scanPackage);
     }
 
+    /**
+     * Gets the scan package.
+     *
+     * @return the scan package
+     */
     @Override
     public String getScanPackage() {
         if (scanPackage == null) {

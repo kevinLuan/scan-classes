@@ -31,20 +31,60 @@ import java.util.jar.JarFile;
 
 /**
  * Class Scanner
- *
- * @author KEVIN LUAN
+ * This class is responsible for scanning and loading classes from the specified package.
+ * It supports scanning from directories and JAR files.
+ * 
+ * Usage:
+ * - To scan a package without any filter: ClassScanner.scanPackage("com.example");
+ * - To scan a package with a filter: ClassScanner.scanPackage("com.example", classFilter);
+ * - To scan system class paths: ClassScanner.scanSystemClass("com.example", classFilter, classes);
+ * 
+ * The scanning process involves:
+ * - Decoding the class path
+ * - Logging the class path being scanned
+ * - Filling the set of classes by processing directories, class files, and JAR files
+ * 
+ * The class also provides utility methods to get class paths and system class paths.
+ * 
+ * Note: The class uses SLF4J for logging.
+ * 
+ * @see ClassFileUtils
+ * @see ClassFilter
+ * @see ClassAndJarFileFilter
+ * @see ClassInfo
+ * @see JarClassEntry
+ * 
+ * Author: KEVIN LUAN
  */
 public class ClassScanner {
     private static final Logger log = LoggerFactory.getLogger(ClassScanner.class);
 
+    /**
+     * Scans the default package and returns a set of classes.
+     * 
+     * @return a set of classes found in the default package
+     */
     public static Set<Class<?>> scanPackage() {
         return scanPackage("", null);
     }
 
+    /**
+     * Scans the specified package and returns a set of classes.
+     * 
+     * @param scanPackage the package to scan
+     * @return a set of classes found in the specified package
+     */
     public static Set<Class<?>> scanPackage(String scanPackage) {
         return scanPackage(scanPackage, null);
     }
 
+    /**
+     * Scans the specified package with the given class filter and returns a set of classes.
+     * 
+     * @param scanPackage the package to scan
+     * @param classFilter the filter to apply while scanning classes
+     * @return a set of classes found in the specified package that match the filter
+     */
     public static Set<Class<?>> scanPackage(String scanPackage, ClassFilter classFilter) {
         scanPackage = ClassFileUtils.formatScanPackage(scanPackage);
         final Set<Class<?>> classes = new HashSet<Class<?>>();
@@ -60,6 +100,14 @@ public class ClassScanner {
         return classes;
     }
 
+    /**
+     * Scans the specified class paths with the given package and class filter, and returns a set of classes.
+     * 
+     * @param classPath the set of class paths to scan
+     * @param scanPackage the package to scan
+     * @param classFilter the filter to apply while scanning classes
+     * @return a set of classes found in the specified class paths that match the filter
+     */
     public static Set<Class<?>> scanPackage(Set<String> classPath, String scanPackage, ClassFilter classFilter) {
         final Set<Class<?>> classes = new HashSet<Class<?>>();
         for (String path : classPath) {
@@ -70,6 +118,14 @@ public class ClassScanner {
         return classes;
     }
 
+    /**
+     * Scans the system class paths with the given package and class filter, and returns a set of classes.
+     * 
+     * @param scanPackage the package to scan
+     * @param classFilter the filter to apply while scanning classes
+     * @param classes the set of classes to fill
+     * @return a set of classes found in the system class paths that match the filter
+     */
     public static Set<Class<?>> scanSystemClass(String scanPackage, ClassFilter classFilter, Set<Class<?>> classes) {
         for (String classPath : getSystemClassPaths()) {
             classPath = ClassFileUtils.decode(classPath);
@@ -79,6 +135,14 @@ public class ClassScanner {
         return classes;
     }
 
+    /**
+     * Fills the set of classes by processing the given path with the specified package and class filter.
+     * 
+     * @param path the path to process
+     * @param scanPackage the package to scan
+     * @param classFilter the filter to apply while scanning classes
+     * @param classes the set of classes to fill
+     */
     public static void fillClasses(String path, String scanPackage, ClassFilter classFilter, Set<Class<?>> classes) {
         if (ClassFileUtils.isJar(path)) {
             processJarFile(new File(ClassFileUtils.parserJarPath(path)), scanPackage, classFilter, classes);
@@ -87,6 +151,15 @@ public class ClassScanner {
         }
     }
 
+    /**
+     * Fills the set of classes by processing the given file with the specified package and class filter.
+     * 
+     * @param classPath the class path
+     * @param file the file to process
+     * @param scanPackage the package to scan
+     * @param classFilter the filter to apply while scanning classes
+     * @param classes the set of classes to fill
+     */
     private static void fillClasses(String classPath, File file, String scanPackage, ClassFilter classFilter,
                                     Set<Class<?>> classes) {
         if (file.isDirectory()) {
@@ -98,6 +171,15 @@ public class ClassScanner {
         }
     }
 
+    /**
+     * Processes the given directory and fills the set of classes by scanning the specified package and applying the class filter.
+     * 
+     * @param classPath the class path
+     * @param directory the directory to process
+     * @param packageName the package to scan
+     * @param classFilter the filter to apply while scanning classes
+     * @param classes the set of classes to fill
+     */
     private static void processDirectory(String classPath, File directory, String packageName, ClassFilter classFilter,
                                          Set<Class<?>> classes) {
         for (File file : directory.listFiles(ClassAndJarFileFilter.INSTANCE)) {
@@ -105,6 +187,15 @@ public class ClassScanner {
         }
     }
 
+    /**
+     * Processes the given class file and fills the set of classes by scanning the specified package and applying the class filter.
+     * 
+     * @param classPath the class path
+     * @param file the class file to process
+     * @param packageName the package to scan
+     * @param classFilter the filter to apply while scanning classes
+     * @param classes the set of classes to fill
+     */
     private static void processClassFile(String classPath, File file, String packageName, ClassFilter classFilter,
                                          Set<Class<?>> classes) {
         ClassInfo filePathEntity = new ClassInfo(file, packageName, classPath);
@@ -114,6 +205,14 @@ public class ClassScanner {
         }
     }
 
+    /**
+     * Processes the given JAR file and fills the set of classes by scanning the specified package and applying the class filter.
+     * 
+     * @param file the JAR file to process
+     * @param scanPackage the package to scan
+     * @param classFilter the filter to apply while scanning classes
+     * @param classes the set of classes to fill
+     */
     private static void processJarFile(File file, String scanPackage, ClassFilter classFilter, Set<Class<?>> classes) {
         try {
             for (JarEntry entry : Collections.list(new JarFile(file).entries())) {
@@ -130,6 +229,13 @@ public class ClassScanner {
         }
     }
 
+    /**
+     * Loads the class from the given class file and applies the class filter.
+     * 
+     * @param classFile the class file to load
+     * @param classFilter the filter to apply while loading the class
+     * @return the loaded class if it matches the filter, null otherwise
+     */
     private static Class<?> loadClass(ClassFileUtils classFile, ClassFilter classFilter) {
         if (classFile.isMatches()) {
             try {
@@ -146,6 +252,12 @@ public class ClassScanner {
         return null;
     }
 
+    /**
+     * Returns the set of class paths for the specified package.
+     * 
+     * @param scanPackage the package to get class paths for
+     * @return the set of class paths for the specified package
+     */
     public static Set<String> getClassPaths(String scanPackage) {
         scanPackage = scanPackage.replace(".", "/");
         Enumeration<URL> resources = null;
@@ -161,10 +273,20 @@ public class ClassScanner {
         return paths;
     }
 
+    /**
+     * Returns the set of class paths for the application.
+     * 
+     * @return the set of class paths for the application
+     */
     public static Set<String> getAppClassPath() {
         return getClassPaths("");
     }
 
+    /**
+     * Returns the array of system class paths.
+     * 
+     * @return the array of system class paths
+     */
     public static String[] getSystemClassPaths() {
         String data = System.getProperty("java.class.path");
         if (data != null) {
@@ -175,6 +297,11 @@ public class ClassScanner {
         }
     }
 
+    /**
+     * Returns the class loader to use for loading classes.
+     * 
+     * @return the class loader to use for loading classes
+     */
     public static ClassLoader getClassLoader() {
         ClassLoader classLoader;// = Thread.currentThread().getContextClassLoader();
         // if (classLoader == null) {

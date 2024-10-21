@@ -4,7 +4,7 @@ scan-classes
   <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
   <a href="javascript:void(0);"><img src="https://img.shields.io/badge/build-passing-brightgreen" /></a>
   <a href="javascript:void(0);" target="_blank"><img src="https://img.shields.io/badge/docs-latest-brightgreen" /></a>
-  <a href="https://javadoc.io/doc/cn.taskflow/scan-classes/latest/index.html" target="_blank"><img src="https://javadoc.io/badge/cn.taskflow/scan-classes/0.2.0.svg" /></a>
+  <a href="https://javadoc.io/doc/cn.taskflow/scan-classes/latest/index.html" target="_blank"><img src="https://javadoc.io/badge/cn.taskflow/scan-classes/0.3.0.svg" /></a>
   <a href="https://central.sonatype.com/artifact/cn.taskflow/scan-classes?smo=true"><img src="https://img.shields.io/maven-metadata/v.svg?label=Maven%20Central&metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fcn%2Ftaskflow%2Fscan-classes%2Fmaven-metadata.xml" alt="License"></a>
 </div>
 

@@ -36,5 +36,4 @@ public class ScannerAnnotationTests {
         }
         Assert.assertTrue(set.size() >= 4);
     }
-
 }
