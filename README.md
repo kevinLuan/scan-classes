@@ -37,13 +37,34 @@ dependencies {
 ###  Sample
 
 ```java
-    //Scan packages: cn.taskflow.scan All classes below that use @Api on them
-    Set<Class<?>> set = ClassScanner.scanPackage("cn.taskflow.scan", (clazz) -> {
-        return clazz.getAnnotation(Api.class) != null;
+    // Example 1: Scan classes with @Api annotation
+    Set<Class<?>>apiClasses=ClassScanner.scanPackage("cn.taskflow.scan",(clazz)->{
+        return clazz.isAnnotationPresent(Api.class);
     });
-    for (Class<?> clazz : set) {
-        System.out.println(clazz);
-    }
+    System.out.println("API classes: "+apiClasses);
+    // Example 2: Scan all interfaces
+    Set<Class<?>>interfaces=ClassScanner.scanPackage("cn.taskflow.scan",Class::isInterface);
+    System.out.println("Interfaces: "+interfaces);
+
+    // Example 3: Scan all abstract classes
+    Set<Class<?>>abstractClasses=ClassScanner.scanPackage("cn.taskflow.scan",
+        (clazz)->Modifier.isAbstract(clazz.getModifiers())&&!clazz.isInterface());
+    System.out.println("Abstract classes: "+abstractClasses);
+
+    // Example 4: Scan classes that implement a specific interface
+    Set<Class<?>>serviceImplementations=ClassScanner.scanPackage("cn.taskflow.scan",
+        (clazz)->!clazz.isInterface()&&Service.class.isAssignableFrom(clazz));
+    System.out.println("Service implementations: "+serviceImplementations);
+
+    // Example 5: Scan classes with methods that have a specific annotation
+    Set<Class<?>>classesWithAnnotatedMethods=ClassScanner.scanPackage("cn.taskflow.scan",(clazz)->{
+        for(Method method:clazz.getDeclaredMethods()){
+            if(method.isAnnotationPresent(Scheduled.class)){
+                return true;
+            }
+        }return false;
+    });
+    System.out.println("Classes with @Scheduled methods: "+classesWithAnnotatedMethods);
 ```
 	
 

@@ -30,26 +30,27 @@ import java.lang.reflect.Method;
  */
 public class MyTest {
     public static void main(String[] args) {
-        // 示例1: 扫描带有@Api注解的类
+        // Example 1: Scan classes with @Api annotation
         Set<Class<?>> apiClasses = ClassScanner.scanPackage("cn.taskflow.scan", (clazz) -> {
             return clazz.isAnnotationPresent(Api.class);
         });
         System.out.println("API classes: " + apiClasses);
-        // 示例2: 扫描所有接口
+
+        // Example 2: Scan all interfaces
         Set<Class<?>> interfaces = ClassScanner.scanPackage("cn.taskflow.scan", Class::isInterface);
         System.out.println("Interfaces: " + interfaces);
 
-        // 示例3: 扫描所有抽象类
-        Set<Class<?>> abstractClasses = ClassScanner.scanPackage("cn.taskflow.scan", 
-            (clazz) -> Modifier.isAbstract(clazz.getModifiers()) && !clazz.isInterface());
+        // Example 3: Scan all abstract classes
+        Set<Class<?>> abstractClasses = ClassScanner.scanPackage("cn.taskflow.scan",
+                (clazz) -> Modifier.isAbstract(clazz.getModifiers()) && !clazz.isInterface());
         System.out.println("Abstract classes: " + abstractClasses);
 
-        // 示例4: 扫描实现了特定接口的类
-        Set<Class<?>> serviceImplementations = ClassScanner.scanPackage("cn.taskflow.scan", 
-            (clazz) -> !clazz.isInterface() && Provider.Service.class.isAssignableFrom(clazz));
+        // Example 4: Scan classes that implement a specific interface
+        Set<Class<?>> serviceImplementations = ClassScanner.scanPackage("cn.taskflow.scan",
+                (clazz) -> !clazz.isInterface() && Provider.Service.class.isAssignableFrom(clazz));
         System.out.println("Service implementations: " + serviceImplementations);
 
-        // 示例5: 扫描带有特定注解的方法的类
+        // Example 5: Scan classes with methods that have a specific annotation
         Set<Class<?>> classesWithAnnotatedMethods = ClassScanner.scanPackage("cn.taskflow.scan", (clazz) -> {
             for (Method method : clazz.getDeclaredMethods()) {
                 if (method.isAnnotationPresent(Api.class)) {
